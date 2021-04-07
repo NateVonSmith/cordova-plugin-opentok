@@ -14,9 +14,12 @@ module.exports = function (context) {
                 exec('tar -zxvf ./' + IosSDKVersion + '.tar.bz2', function (err, out, code) {
                     console.log('expanded');
                     var frameworkDir = context.opts.plugin.dir + '/src/ios/';
-                    exec('mv ./' + IosSDKVersion + '/OpenTok.framework ' + frameworkDir, function (err, out, code) {
+                    // as of version 2.18.0, began naming the extracted tarball file 
+                    // 'OpenTok-iOS' rather than 'OpenTok-iOS-2.17.0' (with appended version number)
+                    var extractedName = 'OpenTok-iOS';
+                    exec('mv ./' + extractedName + '/OpenTok.framework ' + frameworkDir, function (err, out, code) {
                         console.log('moved OpenTok.framework into ' + frameworkDir);
-                        exec('rm -r ./' + IosSDKVersion, function (err, out, code) {
+                        exec('rm -r ./' + extractedName, function (err, out, code) {
                             console.log('Removed extracted dir');
                             exec('rm ./' + IosSDKVersion + '.tar.bz2', function (err, out, code) {
                                 console.log('Removed downloaded SDK');
